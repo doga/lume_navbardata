@@ -7,13 +7,13 @@ lume_navbardata creates [shared data for Lume projects](https://lume.land/docs/c
 
 ## Usage
 
-Call lume_navbardata from your Lume project's [Lume project's configuration file](https://lume.land/docs/configuration/config-file/):
+Call lume_navbardata from your [Lume project's configuration file](https://lume.land/docs/configuration/config-file/):
 
 ```ts
 // _config.ts
 
 import lume from 'lume/mod.ts';
-import lume_navbardata from 'https://deno.land/x/lume_navbardata@v1.0.3/mod.ts';
+import lume_navbardata from 'https://deno.land/x/lume_navbardata@v1.0.4/mod.ts';
 
 export default
 lume({
