@@ -1,9 +1,4 @@
-// Lume plugin https://lume.land/docs/advanced/plugins/
-// Generates navbar data for each localised version of the website.
-// Puts the generated data in <srcdir>/<langdir>/_data/navbar.yaml.
-// Navbar items are inferred from the names of the top-level pages (<srcdir>/<langdir>/<yaml or njk page>).
-// Page files whose front matter doesn't contain a nav.order entry are ignored.
-// The nav order must be a number, and determines the display order of the navbar items.
+// lume_navbardata
 
 import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
 import { Site } from "https://deno.land/x/lume@v1.13.2/core.ts";
@@ -25,9 +20,6 @@ function () {
     currentWorkingDirectoryAbs: string = site.options.cwd,
     projectSourceDirectory    : string = site.options.src,
     projectSourceDirectoryAbs : string = path.resolve(currentWorkingDirectoryAbs, projectSourceDirectory);
-
-    console.info(`ℹ️ navbardata: currentWorkingDirectoryAbs: ${currentWorkingDirectoryAbs}`);
-    console.info(`ℹ️ navbardata: projectSourceDirectoryAbs: ${projectSourceDirectoryAbs}`);
 
     for (const langDirEntry of Deno.readDirSync(projectSourceDirectoryAbs)) {
       if(!(langDirEntry.isDirectory && Language.exists(langDirEntry.name)))continue;
@@ -60,7 +52,6 @@ function () {
           navbarOrder = frontMatter?.nav?.order; 
           if(typeof navbarOrder !== 'number')continue;
 
-          console.log(`Found navbar page: ${pageBasename}`);
           navbarData.push({
             title: titleCase(pageNameWithoutExtension),
             path : lowerCase(pageNameWithoutExtension),
@@ -83,7 +74,6 @@ function () {
         absLangDataDirInfo = Deno.statSync(absLangDataDirname);
       }
       if(!absLangDataDirInfo.isDirectory)continue;
-      console.log(`  data dir: ${absLangDataDirname}`);
 
       // ensure navbar.yaml file does not exist
       const navbarYamlFilenameAbs = path.resolve(absLangDataDirname, 'navbar.yaml');

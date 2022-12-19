@@ -13,7 +13,7 @@ Call lume_navbardata from your Lume project's [Lume project's configuration file
 // _config.ts
 
 import lume from 'lume/mod.ts';
-import lume_navbardata from 'https://deno.land/x/lume_navbardata@v1.0.0/mod.ts';
+import lume_navbardata from 'https://deno.land/x/lume_navbardata@v1.0.1/mod.ts';
 
 export default
 lume({
