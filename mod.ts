@@ -98,7 +98,7 @@ function () {
         Deno.writeTextFileSync(
           navbarYamlFilenameAbs,
           `# This file was automatically generated at build time
-# on ${timestamp} by the "navbardata" Lume plugin.
+# on ${timestamp} by the "lume_navbardata" Lume plugin.
 ${yaml}`);
       } catch (_error) {
         // should never happen
