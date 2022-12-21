@@ -13,7 +13,7 @@ Call lume_navbardata from your [Lume project's configuration file](https://lume.
 // _config.ts
 
 import lume from 'lume/mod.ts';
-import lume_navbardata from 'https://deno.land/x/lume_navbardata@v1.0.5/mod.ts';
+import lume_navbardata from 'lume_navbardata/mod.ts';
 
 export default
 lume({
@@ -23,6 +23,19 @@ lume({
 })
 .use(lume_navbardata());
 ```
+
+Don't forget to define the `lume_navbardata/` import prefix in your lume project's `import_map.json` file:
+
+```json
+{
+  "imports": {
+    "lume/"           : "https://deno.land/x/lume@v1.14.2/",
+    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.6/",
+  }
+}
+```
+
+`lume_navbardata@v1.x.x` versions are compatible with `lume@v1.x.x` versions from `lume@v1.13.x` upwards.
 
 ## Lume project directory structure
 

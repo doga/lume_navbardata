@@ -1,7 +1,7 @@
 // lume_navbardata
 
 import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
-import { Site } from "https://deno.land/x/lume@v1.13.2/core.ts";
+import { Site } from "lume/core.ts";
 import YAML from 'https://cdn.skypack.dev/pin/yaml@v2.1.3-ntmfesRl3kdsLKTvvOl6/mode=imports,min/optimized/yaml.js';
 import * as date from 'https://deno.land/std@0.160.0/datetime/mod.ts';
 import { titleCase, lowerCase } from "https://deno.land/x/case@2.1.1/mod.ts";
