@@ -9,7 +9,7 @@ import { titleCase, lowerCase } from "https://deno.land/x/case@2.1.1/mod.ts";
 import {Language} from './modules/language.ts';
 
 type NavbarEntry = {title: string, path: string, order: number};
-const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk'];
+const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md'];
 
 export default 
 function () {
