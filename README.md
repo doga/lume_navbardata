@@ -30,7 +30,7 @@ Don't forget to define the `lume_navbardata/` import prefix in your lume project
 {
   "imports": {
     "lume/"           : "https://deno.land/x/lume@v1.14.2/",
-    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.8/",
+    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.9/",
   }
 }
 ```
