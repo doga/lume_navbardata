@@ -30,7 +30,7 @@ Don't forget to define the `lume_navbardata/` import prefix in your lume project
 {
   "imports": {
     "lume/"           : "https://deno.land/x/lume@v1.14.2/",
-    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.7/",
+    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.8/",
   }
 }
 ```
@@ -52,7 +52,7 @@ then lume_navbardata will ignore the `assets` directory and the `index.html` fil
 
 Within a language directory, lume_navbardata assumes that each link in the navigation bar corresponds to a [page](https://lume.land/docs/creating-pages/page-files/) in the language directory. lume_navbardata will only consider pages:
 
-- that have the `.yaml`, `.yml` or `.njk` filename extensions, and
+- that have the `.yaml`, `.yml`, `.md` or `.njk` filename extensions, and
 - whose [front matter](https://lume.land/docs/getting-started/page-data/) contains a `nav.order` entry which is an integer or floating point number that defines the display order in the navigation bar.
 
 For example, if the `en` directory contains these pages:
