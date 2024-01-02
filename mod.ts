@@ -1,20 +1,19 @@
 // lume_navbardata
 
-import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
-import { Site } from "lume/core.ts";
-import YAML from 'https://cdn.skypack.dev/pin/yaml@v2.1.3-ntmfesRl3kdsLKTvvOl6/mode=imports,min/optimized/yaml.js';
-import * as date from 'https://deno.land/std@0.160.0/datetime/mod.ts';
-import { titleCase, lowerCase } from "https://deno.land/x/case@2.1.1/mod.ts";
+// external dependencies
+import {path, YAML, date, Lang, titleCase, lowerCase, Frontmatter} from './deps.ts'; 
 
-import {Language} from './modules/language.ts';
-
-type NavbarEntry = {title: string, path: string, order: number};
-const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md'];
+type InputNavbarInfo = {selection: string, order?: number};
+type FrontmatterData = Record<string, unknown>;
+type OutputNavbarEntry = {title: string, path: string, order: number};
+// type YamlSimpleData = string | number | boolean | null | undefined;
+// type YamlData = Record<string,  unknown>;
+const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md', '.vto'];
 
 export default 
 function () {
-  return (site: Site) => {
-    // console.info(`ℹ️ navbardata: site: ${JSON.stringify(site)}`);
+  return (site: Lume.Site) => {
+    console.info(`ℹ️ navbardata: site: ${JSON.stringify(site)}`);
 
     const
     currentWorkingDirectoryAbs: string = site.options.cwd,
@@ -22,14 +21,14 @@ function () {
     projectSourceDirectoryAbs : string = path.resolve(currentWorkingDirectoryAbs, projectSourceDirectory);
 
     for (const langDirEntry of Deno.readDirSync(projectSourceDirectoryAbs)) {
-      if(!(langDirEntry.isDirectory && Language.exists(langDirEntry.name)))continue;
+      if(!(langDirEntry.isDirectory && Lang.getLanguageInfo(langDirEntry.name)))continue;
 
       // directory serves the site in this language: langDirEntry.name
       const
-      langCode          : string        = langDirEntry.name,
-      absLangDirname    : string        = path.resolve(projectSourceDirectoryAbs, langCode),
-      absLangDataDirname: string        = path.resolve(absLangDirname, '_data'),
-      navbarData        : NavbarEntry[] = []
+      langCode          : string              = langDirEntry.name,
+      absLangDirname    : string              = path.resolve(projectSourceDirectoryAbs, langCode),
+      absLangDataDirname: string              = path.resolve(absLangDirname, '_data'),
+      navbarData        : OutputNavbarEntry[] = []
       ;
 
       // generate the navbar data in memory
@@ -38,29 +37,38 @@ function () {
         if(!pageExtension)continue;
 
         const 
-        absPageFileName          : string        = path.resolve(absLangDirname, pageEntry.name),
-        absPageFileInfo          : Deno.FileInfo = Deno.statSync(absPageFileName),
-        pageBasename            : string         = path.basename(absPageFileName),
-        pageNameWithoutExtension: string         = pageBasename.substring(0,pageBasename.length-pageExtension.length);
+        absPageFileName         : string        = path.resolve(absLangDirname, pageEntry.name),
+        absPageFileInfo         : Deno.FileInfo = Deno.statSync(absPageFileName),
+        pageBasename            : string        = path.basename(absPageFileName),
+        pageNameWithoutExtension: string        = pageBasename.substring(0,pageBasename.length-pageExtension.length);
 
         if(!absPageFileInfo.isFile)continue;
+        console.debug(`ℹ️ navbardata: page: ${langCode}/${pageEntry.name}`);
+
+        const pageText    = Deno.readTextFileSync(absPageFileName);
+        let frontMatter: FrontmatterData = {};
 
         try {
-          const 
-          pageText: string = Deno.readTextFileSync(absPageFileName),
-          frontMatter = YAML.parseDocument(pageText)?.toJS(),
-          navbarOrder = frontMatter?.nav?.order; 
-          if(typeof navbarOrder !== 'number')continue;
-
-          navbarData.push({
-            title: titleCase(pageNameWithoutExtension),
-            path : lowerCase(pageNameWithoutExtension),
-            order: navbarOrder
-          });
-  
+          frontMatter = Frontmatter.extract(pageText).attrs as FrontmatterData;
         } catch (_error) {
-          continue;
+          // the document may be plain YAML 
+          try {
+            frontMatter = YAML.parse(pageText) as FrontmatterData;
+          } catch (_error) {
+            console.debug(`navbardata: error ${_error}`);
+            continue;
+          }
         }
+
+        const navbarOrder = (frontMatter?.nav as InputNavbarInfo)?.order;
+        console.debug(`navbardata: frontmatter: ${JSON.stringify(frontMatter)}`);
+        if(typeof navbarOrder !== 'number')continue;
+
+        navbarData.push({
+          title: titleCase(pageNameWithoutExtension),
+          path : lowerCase(pageNameWithoutExtension),
+          order: navbarOrder
+        });
       }
       navbarData.sort((a, b) => a.order - b.order);
 
@@ -91,7 +99,7 @@ function () {
         const
         now       = new Date(),
         timestamp = date.format(now, "yyyy-MM-dd"),
-        yaml      = YAML.stringify(navbarData);
+        yaml      = YAML.stringify({list: navbarData});
 
         if(!yaml)throw new Error('');
 

@@ -24,18 +24,18 @@ lume({
 .use(lume_navbardata());
 ```
 
-Don't forget to define the `lume_navbardata/` import prefix in your lume project's `import_map.json` file:
+Don't forget to define the `lume_navbardata/` import prefix in your lume project's `deno.json` file:
 
 ```json
 {
   "imports": {
-    "lume/"           : "https://deno.land/x/lume@v1.14.2/",
-    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v1.0.10/",
+    "lume/"           : "https://deno.land/x/lume@v2.0.2/",
+    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v2.0.0/",
   }
 }
 ```
 
-`lume_navbardata@v1.x.x` versions are compatible with `lume@v1.x.x` versions from `lume@v1.13.x` upwards.
+`lume_navbardata@v2.x.x` versions are compatible with `lume@v2.x.x`.
 
 ## Lume project directory structure
 
@@ -52,7 +52,7 @@ then lume_navbardata will ignore the `assets` directory and the `index.html` fil
 
 Within a language directory, lume_navbardata assumes that each link in the navigation bar corresponds to a [page](https://lume.land/docs/creating-pages/page-files/) in the language directory. lume_navbardata will only consider pages:
 
-- that have the `.yaml`, `.yml`, `.md` or `.njk` filename extensions, and
+- that have the `.yaml`, `.yml`, `.md`, `.vto` or `.njk` filename extensions, and
 - whose [front matter](https://lume.land/docs/getting-started/page-data/) contains a `nav.order` entry which is an integer or floating point number that defines the display order in the navigation bar.
 
 For example, if the `en` directory contains these pages:
@@ -80,6 +80,7 @@ Given the source directory structure shown above, lume_navbardata will generate 
 For example, `en/_data/navbar.yaml` will be similar to this:
 
 ```yaml
+list:
 - title: Documentation
   path: documentation
   order: 1
@@ -113,7 +114,7 @@ Here is how the navbar data can be used in [Lume layouts](https://lume.land/docs
           </a>
         </li>
 
-        {% for item in navbar %}
+        {% for item in navbar.list %}
         <li>
           <a 
             href="/{{ lang.code }}/{{ item.path }}/"
