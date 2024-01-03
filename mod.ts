@@ -8,7 +8,7 @@ type FrontmatterData = Record<string, unknown>;
 type OutputNavbarEntry = {title: string, path: string, order: number};
 // type YamlSimpleData = string | number | boolean | null | undefined;
 // type YamlData = Record<string,  unknown>;
-const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md', '.vto'];
+const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md', '.vto', '.vento'];
 
 export default 
 function () {
