@@ -13,7 +13,7 @@ const pageFileExtensions: string[] = ['.yaml', '.yml', '.njk', '.md', '.vto'];
 export default 
 function () {
   return (site: Lume.Site) => {
-    console.info(`ℹ️ navbardata: site: ${JSON.stringify(site)}`);
+    // console.info(`ℹ️ navbardata: site: ${JSON.stringify(site)}`);
 
     const
     currentWorkingDirectoryAbs: string = site.options.cwd,
@@ -43,7 +43,7 @@ function () {
         pageNameWithoutExtension: string        = pageBasename.substring(0,pageBasename.length-pageExtension.length);
 
         if(!absPageFileInfo.isFile)continue;
-        console.debug(`ℹ️ navbardata: page: ${langCode}/${pageEntry.name}`);
+        // console.debug(`ℹ️ navbardata: page: ${langCode}/${pageEntry.name}`);
 
         const pageText    = Deno.readTextFileSync(absPageFileName);
         let frontMatter: FrontmatterData = {};
@@ -55,13 +55,13 @@ function () {
           try {
             frontMatter = YAML.parse(pageText) as FrontmatterData;
           } catch (_error) {
-            console.debug(`navbardata: error ${_error}`);
+            // console.debug(`navbardata: error ${_error}`);
             continue;
           }
         }
 
         const navbarOrder = (frontMatter?.nav as InputNavbarInfo)?.order;
-        console.debug(`navbardata: frontmatter: ${JSON.stringify(frontMatter)}`);
+        // console.debug(`navbardata: frontmatter: ${JSON.stringify(frontMatter)}`);
         if(typeof navbarOrder !== 'number')continue;
 
         navbarData.push({
