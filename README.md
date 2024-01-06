@@ -24,13 +24,18 @@ lume({
 .use(lume_navbardata());
 ```
 
-Don't forget to define the `lume_navbardata/` import prefix in your lume project's `deno.json` file:
+In your lume project's `deno.json` file, don't forget to define the `lume_navbardata` import, and also the compiler option that `lume_langdata` depends on:
 
 ```json
 {
   "imports": {
-    "lume/"           : "https://deno.land/x/lume@v2.0.2/",
-    "lume_navbardata/": "https://deno.land/x/lume_navbardata@v2.0.3/",
+    "lume/"         : "https://deno.land/x/lume@v2.0.2/",
+    "lume_langdata"  : "https://deno.land/x/lume_langdata@v2.0.4/mod.ts",
+  },
+  "compilerOptions": {
+    "types": [
+      "lume/types.ts"
+    ]
   }
 }
 ```
@@ -52,7 +57,7 @@ then lume_navbardata will ignore the `assets` directory and the `index.html` fil
 
 Within a language directory, lume_navbardata assumes that each link in the navigation bar corresponds to a [page](https://lume.land/docs/creating-pages/page-files/) in the language directory. lume_navbardata will only consider pages:
 
-- that have the `.yaml`, `.yml`, `.md`, `.vto` or `.njk` filename extensions, and
+- that have the `.yaml`, `.yml`, `.md`, `.vto`, `.vento` or `.njk` filename extensions, and
 - whose [front matter](https://lume.land/docs/getting-started/page-data/) contains a `nav.order` entry which is an integer or floating point number that defines the display order in the navigation bar.
 
 For example, if the `en` directory contains these pages:
@@ -145,10 +150,9 @@ Note that:
 
 ## Other relevant Lume add-ons
 
-If you are developing multi-language sites, the following Lume plugin and add-on are a nice complement to lume_navbardata:
+If you are developing multi-language sites, the following Lume plugin is a nice complement to lume_navbardata:
 
 - [lume_langdata](https://deno.land/x/lume_langdata)
-- [lume_cross_language_content](https://deno.land/x/lume_cross_language_content)
 
 ## Demo
 
